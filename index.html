@@ -99,10 +99,10 @@
     <!-- IMPORTANT: Apna Google Apps Script Web App URL yahan paste karein -->
     <!-- ======================= -->
     <script>
-        // Yeh URL aapko Google Apps Script deploy karne ke baad milega
-        // Replace this with your actual deployed Google Apps Script Web App URL
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2B9djPpLPBuy3-FvdmmwjG5MYV7dY_cRnlG_r_kcmjwt2Dyrxm7HDAeoGg1mEsHyG/exec';
     </script>
+    <!-- Hidden iframe for form submission (bypasses CORS) -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
     <!-- Header -->
     <header class="gradient-bg text-white fixed w-full z-50">
@@ -394,7 +394,7 @@
                 <!-- Success/Error Message -->
                 <div id="formMessage" class="text-center mb-4 p-4 rounded-md"></div>
 
-                <form id="contactForm" aria-label="Contact form">
+                <form id="contactForm" method="POST" action="" target="hidden_iframe" aria-label="Contact form">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
@@ -494,15 +494,16 @@
             });
         });
 
-        // Form submission via fetch to Google Apps Script
+        // Form submission via hidden iframe (bypasses CORS issues)
         const contactForm = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
         const formMessage = document.getElementById('formMessage');
 
         if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+            // Set the form action to Google Apps Script URL
+            contactForm.action = GOOGLE_SCRIPT_URL;
 
+            contactForm.addEventListener('submit', function(e) {
                 // Reset error messages
                 document.querySelectorAll('.text-red-500').forEach(el => el.classList.add('hidden'));
                 formMessage.style.display = 'none';
@@ -530,44 +531,25 @@
                     isValid = false;
                 }
 
-                if (!isValid) return;
+                if (!isValid) {
+                    e.preventDefault();
+                    return;
+                }
 
                 // Show loading state
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
 
-                // Build form data as URL params
-                const formData = new URLSearchParams();
-                formData.append('name', name);
-                formData.append('email', email);
-                formData.append('service', service);
-                formData.append('message', message);
-
-                // Send to Google Apps Script
-                fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: formData.toString()
-                })
-                .then(() => {
-                    // no-cors mode doesn't return readable response, but data is sent
+                // Form submits to hidden iframe automatically (method=POST, target=hidden_iframe)
+                // Show success after short delay
+                setTimeout(function() {
                     formMessage.style.display = 'block';
                     formMessage.className = 'text-center mb-4 p-4 rounded-md bg-green-100 text-green-700';
                     formMessage.textContent = 'Thank you! Your inquiry has been submitted. We will contact you soon.';
                     contactForm.reset();
-                })
-                .catch(error => {
-                    formMessage.style.display = 'block';
-                    formMessage.className = 'text-center mb-4 p-4 rounded-md bg-red-100 text-red-700';
-                    formMessage.textContent = 'Something went wrong. Please try again or email us directly.';
-                })
-                .finally(() => {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = 'Submit Inquiry';
-                });
+                }, 2000);
             });
         }
 
