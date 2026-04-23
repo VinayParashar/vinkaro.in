@@ -492,75 +492,74 @@
             });
         });
 
-        // Form submission - GET request via script tag (CORS-proof, 100% reliable)
+        // JSONP form submission (works across all domains, no CORS issues)
         const contactForm = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
         const formMessage = document.getElementById('formMessage');
+
+        // JSONP callback function - Google Apps Script will call this
+        window.formCallback = function(result) {
+            if (result === 'success') {
+                formMessage.style.display = 'block';
+                formMessage.className = 'text-center mb-4 p-4 rounded-md bg-green-100 text-green-700';
+                formMessage.textContent = 'Thank you! Your inquiry has been submitted. We will contact you soon.';
+                contactForm.reset();
+            } else {
+                formMessage.style.display = 'block';
+                formMessage.className = 'text-center mb-4 p-4 rounded-md bg-red-100 text-red-700';
+                formMessage.textContent = 'Something went wrong. Please try again.';
+            }
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Submit Inquiry';
+        };
 
         if (contactForm) {
             contactForm.addEventListener('submit', function(e) {
                 e.preventDefault();
 
-                // Reset error messages
-                document.querySelectorAll('.text-red-500').forEach(el => el.classList.add('hidden'));
+                // Reset errors
+                document.querySelectorAll('.text-red-500').forEach(function(el) { el.classList.add('hidden'); });
                 formMessage.style.display = 'none';
 
-                let isValid = true;
-                const name = document.getElementById('name').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const service = document.getElementById('service').value;
-                const message = document.getElementById('message').value.trim();
+                var isValid = true;
+                var name = document.getElementById('name').value.trim();
+                var email = document.getElementById('email').value.trim();
+                var service = document.getElementById('service').value;
+                var message = document.getElementById('message').value.trim();
 
-                if (!name) {
-                    document.getElementById('nameError').classList.remove('hidden');
-                    isValid = false;
-                }
-                if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                    document.getElementById('emailError').classList.remove('hidden');
-                    isValid = false;
-                }
-                if (!service) {
-                    document.getElementById('serviceError').classList.remove('hidden');
-                    isValid = false;
-                }
-                if (!message) {
-                    document.getElementById('messageError').classList.remove('hidden');
-                    isValid = false;
-                }
+                if (!name) { document.getElementById('nameError').classList.remove('hidden'); isValid = false; }
+                if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('emailError').classList.remove('hidden'); isValid = false; }
+                if (!service) { document.getElementById('serviceError').classList.remove('hidden'); isValid = false; }
+                if (!message) { document.getElementById('messageError').classList.remove('hidden'); isValid = false; }
 
                 if (!isValid) return;
 
-                // Show loading
+                // Loading state
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
 
-                // Build URL with form data as GET parameters
-                var url = GOOGLE_SCRIPT_URL
-                    + '?name=' + encodeURIComponent(name)
+                // JSONP: Create script tag with callback
+                var script = document.createElement('script');
+                script.src = GOOGLE_SCRIPT_URL
+                    + '?callback=formCallback'
+                    + '&name=' + encodeURIComponent(name)
                     + '&email=' + encodeURIComponent(email)
                     + '&service=' + encodeURIComponent(service)
                     + '&message=' + encodeURIComponent(message);
 
-                // Method 1: Script tag injection (bypasses ALL CORS restrictions)
-                var script = document.createElement('script');
-                script.src = url + '&callback=formCallback';
-
-                // Method 2: Image beacon as backup
-                var img = new Image();
-                img.src = url;
-
-                // Show success after 2 seconds
-                setTimeout(function() {
+                // Error handling
+                script.onerror = function() {
                     formMessage.style.display = 'block';
-                    formMessage.className = 'text-center mb-4 p-4 rounded-md bg-green-100 text-green-700';
-                    formMessage.textContent = 'Thank you! Your inquiry has been submitted. We will contact you soon.';
-                    contactForm.reset();
+                    formMessage.className = 'text-center mb-4 p-4 rounded-md bg-red-100 text-red-700';
+                    formMessage.textContent = 'Something went wrong. Please try again.';
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = 'Submit Inquiry';
+                };
 
-                    // Cleanup
+                // Cleanup after load
+                script.onload = function() {
                     if (script.parentNode) script.parentNode.removeChild(script);
-                }, 2000);
+                };
 
                 document.body.appendChild(script);
             });
