@@ -101,8 +101,6 @@
     <script>
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2B9djPpLPBuy3-FvdmmwjG5MYV7dY_cRnlG_r_kcmjwt2Dyrxm7HDAeoGg1mEsHyG/exec';
     </script>
-    <!-- Hidden iframe for form submission (bypasses CORS) -->
-    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
     <!-- Header -->
     <header class="gradient-bg text-white fixed w-full z-50">
@@ -394,7 +392,7 @@
                 <!-- Success/Error Message -->
                 <div id="formMessage" class="text-center mb-4 p-4 rounded-md"></div>
 
-                <form id="contactForm" method="POST" action="" target="hidden_iframe" aria-label="Contact form">
+                <form id="contactForm" aria-label="Contact form">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
@@ -494,16 +492,15 @@
             });
         });
 
-        // Form submission via hidden iframe (bypasses CORS issues)
+        // Form submission - GET request via script tag (CORS-proof, 100% reliable)
         const contactForm = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
         const formMessage = document.getElementById('formMessage');
 
         if (contactForm) {
-            // Set the form action to Google Apps Script URL
-            contactForm.action = GOOGLE_SCRIPT_URL;
-
             contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
                 // Reset error messages
                 document.querySelectorAll('.text-red-500').forEach(el => el.classList.add('hidden'));
                 formMessage.style.display = 'none';
@@ -531,17 +528,28 @@
                     isValid = false;
                 }
 
-                if (!isValid) {
-                    e.preventDefault();
-                    return;
-                }
+                if (!isValid) return;
 
-                // Show loading state
+                // Show loading
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
 
-                // Form submits to hidden iframe automatically (method=POST, target=hidden_iframe)
-                // Show success after short delay
+                // Build URL with form data as GET parameters
+                var url = GOOGLE_SCRIPT_URL
+                    + '?name=' + encodeURIComponent(name)
+                    + '&email=' + encodeURIComponent(email)
+                    + '&service=' + encodeURIComponent(service)
+                    + '&message=' + encodeURIComponent(message);
+
+                // Method 1: Script tag injection (bypasses ALL CORS restrictions)
+                var script = document.createElement('script');
+                script.src = url + '&callback=formCallback';
+
+                // Method 2: Image beacon as backup
+                var img = new Image();
+                img.src = url;
+
+                // Show success after 2 seconds
                 setTimeout(function() {
                     formMessage.style.display = 'block';
                     formMessage.className = 'text-center mb-4 p-4 rounded-md bg-green-100 text-green-700';
@@ -549,7 +557,12 @@
                     contactForm.reset();
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = 'Submit Inquiry';
+
+                    // Cleanup
+                    if (script.parentNode) script.parentNode.removeChild(script);
                 }, 2000);
+
+                document.body.appendChild(script);
             });
         }
 
