@@ -4,84 +4,380 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Professional Google Sheets automation and reporting services by Vinay Parashar">
-    <meta name="keywords" content="Google Sheets, automation, reporting, data visualization">
+    <meta name="keywords" content="Google Sheets, automation, reporting, data visualization, AI">
     <meta name="author" content="Vinay Parashar">
     <title>Vinay Parashar - AI & Automation Services</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'display': ['Space Grotesk', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        * { scroll-behavior: smooth; }
+
+        /* ===== HERO GRADIENT ===== */
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            position: relative;
+            overflow: hidden;
         }
-        .flow-gradient {
-            background: linear-gradient(to right, rgba(99, 102, 241, 0.1), rgba(165, 180, 252, 0.3));
-            border-radius: 1rem;
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
+            animation: heroGlow 15s ease-in-out infinite alternate;
         }
+        @keyframes heroGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-5%, 5%) scale(1.1); }
+        }
+
+        /* ===== NAVBAR ===== */
+        .nav-glass {
+            background: rgba(15, 12, 41, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+            transition: all 0.4s ease;
+        }
+        .nav-glass.scrolled {
+            background: rgba(15, 12, 41, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        .nav-link {
+            position: relative;
+            padding: 0.25rem 0;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link:hover { color: #c4b5fd; }
+
+        /* ===== GLASSMORPHISM CARDS ===== */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(139, 92, 246, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px rgba(139, 92, 246, 0.15);
+        }
+
+        /* ===== SERVICE CARDS ===== */
         .service-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transform: perspective(1000px) rotateX(0deg);
+            background: #fff;
+            border: 1px solid #f3f4f6;
+            border-radius: 1.25rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6, #ec4899);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
         .service-card:hover {
-            transform: perspective(1000px) rotateX(5deg) translateY(-10px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px rgba(139, 92, 246, 0.12);
+            border-color: rgba(139, 92, 246, 0.2);
         }
-        .ai-feature::before {
-            content: "\26A1";
-            margin-right: 10px;
+        .service-card:hover::before { opacity: 1; }
+        .service-icon-wrap {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
         }
-        #contactForm .form-input {
-            transition: all 0.3s ease;
+        .service-card:hover .service-icon-wrap {
+            transform: scale(1.1) rotate(-5deg);
         }
-        #contactForm .form-input:focus {
-            box-shadow: 0 0 0 3px rgba(167, 119, 227, 0.3);
-        }
-        .perspective-1000 {
-            perspective: 1000px;
-        }
-        .transform-style-preserve-3d {
-            transform-style: preserve-3d;
-        }
-        @keyframes slide {
-            0%, 100% { opacity: 0; transform: translateY(20px); }
-            20%, 80% { opacity: 1; transform: translateY(0); }
-        }
-        .animate-slide {
-            animation: slide 12s infinite cubic-bezier(0.4, 0, 0.2, 1);
+
+        /* ===== PORTFOLIO CARDS ===== */
+        .portfolio-card {
+            border-radius: 1.25rem;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #f3f4f6;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform, opacity;
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50% { transform: translateY(-12px) rotate(2deg); }
+        .portfolio-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .portfolio-card .portfolio-img {
+            transition: transform 0.6s ease;
         }
+        .portfolio-card:hover .portfolio-img {
+            transform: scale(1.05);
+        }
+
+        /* ===== STATS ===== */
+        .stat-card {
+            position: relative;
+            padding: 2rem;
+            text-align: center;
+        }
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 25%;
+            height: 50%;
+            width: 1px;
+            background: rgba(139, 92, 246, 0.2);
+        }
+        .stat-card:last-child::after { display: none; }
+
+        /* ===== GRADIENT TEXT ===== */
+        .gradient-text {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== SECTION BADGE ===== */
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 1rem;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 9999px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #7c3aed;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* ===== FORM ===== */
+        .form-input-modern {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 0.9375rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        .form-input-modern:focus {
+            background: #fff;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+        }
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== FLOATING PARTICLES ===== */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+        .particle-1 {
+            width: 6px; height: 6px;
+            background: #8b5cf6;
+            top: 20%; left: 10%;
+            animation: floatParticle 8s ease-in-out infinite;
+        }
+        .particle-2 {
+            width: 4px; height: 4px;
+            background: #3b82f6;
+            top: 60%; left: 80%;
+            animation: floatParticle 10s ease-in-out infinite 2s;
+        }
+        .particle-3 {
+            width: 8px; height: 8px;
+            background: #ec4899;
+            top: 40%; left: 50%;
+            animation: floatParticle 12s ease-in-out infinite 4s;
+        }
+        .particle-4 {
+            width: 5px; height: 5px;
+            background: #a78bfa;
+            top: 80%; left: 25%;
+            animation: floatParticle 9s ease-in-out infinite 1s;
+        }
+        .particle-5 {
+            width: 3px; height: 3px;
+            background: #60a5fa;
+            top: 15%; left: 70%;
+            animation: floatParticle 11s ease-in-out infinite 3s;
+        }
+        @keyframes floatParticle {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+            25% { transform: translate(30px, -40px) scale(1.2); opacity: 0.7; }
+            50% { transform: translate(-20px, -80px) scale(0.8); opacity: 0.3; }
+            75% { transform: translate(40px, -40px) scale(1.1); opacity: 0.6; }
+        }
+
+        /* ===== IMAGE SLIDESHOW ===== */
+        .hero-image-container {
+            position: relative;
+            height: 400px;
+            perspective: 1200px;
+        }
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: rotateY(8deg) rotateX(-3deg) scale(0.95);
+            border-radius: 1.25rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        }
+        .hero-slide.active {
+            opacity: 1;
+            transform: rotateY(0deg) rotateX(0deg) scale(1);
+        }
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ===== WORKFLOW STEP ===== */
+        .workflow-step {
+            position: relative;
+            padding-left: 3.5rem;
+        }
+        .workflow-step::before {
+            content: '';
+            position: absolute;
+            left: 1.25rem;
+            top: 3.5rem;
+            bottom: -1rem;
+            width: 2px;
+            background: linear-gradient(to bottom, #8b5cf6, transparent);
+        }
+        .workflow-step:last-child::before { display: none; }
+        .workflow-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
         .animate-on-scroll {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .animate-on-scroll.visible {
             opacity: 1;
             transform: translateY(0);
         }
-        .mobile-menu {
-            transition: transform 0.3s ease-in-out;
+        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+        .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .mobile-menu-overlay.open { opacity: 1; pointer-events: all; }
+        .mobile-menu-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(180deg, #1a1145, #0f0c29);
+            z-index: 100;
             transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 2rem;
         }
-        .mobile-menu.open {
-            transform: translateX(0);
-        }
-        #formMessage {
-            display: none;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        .mobile-menu-panel.open { transform: translateX(0); }
+
+        /* ===== SPINNER ===== */
+        @keyframes spin { to { transform: rotate(360deg); } }
         .spinner {
             display: inline-block;
             width: 20px;
@@ -91,414 +387,767 @@
             border-top-color: #fff;
             animation: spin 0.8s ease-in-out infinite;
         }
+
+        /* ===== GRADIENT FOOTER ===== */
+        .footer-gradient {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        }
+
+        /* ===== BUTTON GLOW ===== */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6, #ec4899, #8b5cf6);
+            background-size: 300% 300%;
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            animation: glowRotate 3s linear infinite;
+        }
+        .btn-glow:hover::before { opacity: 1; }
+        @keyframes glowRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ===== FEATURE LIST ===== */
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.75rem 0;
+        }
+        .feature-icon-sm {
+            width: 2rem;
+            height: 2rem;
+            min-width: 2rem;
+            border-radius: 0.5rem;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7c3aed;
+            font-size: 0.75rem;
+        }
+
+        /* ===== TAG / BADGE ===== */
+        .tech-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .tech-tag:hover { transform: translateY(-1px); }
     </style>
 </head>
-<body class="font-sans bg-gray-50 text-gray-800">
-    <!-- ============================================================ -->
-    <!-- IMPORTANT: Apna Google Apps Script Deployment URL yahan dalein -->
-    <!-- Deploy > Manage deployments se URL copy karein                -->
-    <!-- ============================================================ -->
+<body class="font-sans bg-white text-gray-800 antialiased">
+
+    <!-- Google Apps Script URL -->
     <script>
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxe1VWjIv6kjeleuHwjh9fxJZGTaK0Zg_JrnIvmJf-eZAbcYpEI1xJvYOBZ4384JnPs/exec';
     </script>
-    <!-- Header -->
-    <header class="gradient-bg text-white fixed w-full z-50">
+
+    <!-- ==================== NAVBAR ==================== -->
+    <header class="nav-glass fixed w-full z-50" id="navbar">
         <nav class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
-                <div class="text-2xl font-bold" role="heading" aria-level="1">Vinay Parashar</div>
-                <ul class="hidden md:flex space-x-8" role="navigation" aria-label="Main navigation">
-                    <li><a href="#services" class="hover:text-gray-200 transition">Services</a></li>
-                    <li><a href="#features" class="hover:text-gray-200 transition">Features</a></li>
-                    <li><a href="#portfolio" class="hover:text-gray-200 transition">Portfolio</a></li>
-                    <li><a href="#contact" class="hover:text-gray-200 transition">Contact</a></li>
+                <a href="#" class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg font-display shadow-lg shadow-violet-500/20">V</div>
+                    <span class="text-xl font-bold text-white font-display">Vinay Parashar</span>
+                </a>
+                <ul class="hidden md:flex items-center space-x-8">
+                    <li><a href="#services" class="nav-link text-gray-300 text-sm font-medium">Services</a></li>
+                    <li><a href="#features" class="nav-link text-gray-300 text-sm font-medium">Features</a></li>
+                    <li><a href="#portfolio" class="nav-link text-gray-300 text-sm font-medium">Portfolio</a></li>
+                    <li>
+                        <a href="#contact" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-violet-600 to-blue-600 text-white text-sm font-semibold rounded-xl hover:shadow-lg hover:shadow-violet-500/25 transition-all hover:-translate-y-0.5">
+                            <i class="fas fa-paper-plane text-xs"></i> Contact
+                        </a>
+                    </li>
                 </ul>
-                <button class="md:hidden focus:outline-none" aria-label="Toggle mobile menu" id="mobileMenuToggle">
-                    <i class="fas fa-bars text-2xl"></i>
+                <button class="md:hidden text-white focus:outline-none" id="mobileMenuToggle" aria-label="Open menu">
+                    <i class="fas fa-bars text-xl"></i>
                 </button>
-            </div>
-            <div id="mobileMenu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-lg p-6">
-                <button class="absolute top-4 right-4 focus:outline-none" aria-label="Close mobile menu" id="closeMobileMenu">
-                    <i class="fas fa-times text-2xl text-gray-800"></i>
-                </button>
-                <ul class="flex flex-col space-y-4 mt-12">
-                    <li><a href="#services" class="text-gray-800 hover:text-purple-600 transition">Services</a></li>
-                    <li><a href="#features" class="text-gray-800 hover:text-purple-600 transition">Features</a></li>
-                    <li><a href="#portfolio" class="text-gray-800 hover:text-purple-600 transition">Portfolio</a></li>
-                    <li><a href="#contact" class="text-gray-800 hover:text-purple-600 transition">Contact</a></li>
-                </ul>
             </div>
         </nav>
     </header>
-    <!-- Hero Section -->
-    <section class="gradient-bg text-white py-24 px-6 pt-24 animate-on-scroll">
-        <div class="container mx-auto flex flex-col md:flex-row items-center">
-            <div class="md:w-1/2 mb-10 md:mb-0">
-                <h1 class="text-4xl md:text-5xl font-bold mb-6">Google Sheets Automation Expert</h1>
-                <p class="text-xl mb-8">Streamline your workflows with custom Google Sheets automation, advanced formatting, and professional reporting solutions.</p>
-                <a href="#contact" class="bg-white text-indigo-700 font-semibold py-3 px-8 rounded-full hover:bg-gray-50 transition-all transform hover:scale-105 hover:shadow-xl active:scale-95 shadow-lg inline-block">
-                    Get Started
-                </a>
-            </div>
-            <div class="md:w-1/2 relative">
-                <div class="perspective-1000 transform-style-preserve-3d">
-                    <div class="relative h-80 w-full">
-                        <div class="absolute inset-0 animate-slide animate-float" style="transform: rotateY(10deg) rotateX(-5deg) translateZ(30px); filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15));">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/13b2d267-568b-4aae-b7a7-655e8f4b37db.png" alt="Google Sheet report example" class="w-full h-full rounded-xl object-cover border border-white/20" loading="lazy" width="600" height="400">
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileOverlay"></div>
+    <div class="mobile-menu-panel" id="mobileMenu">
+        <button class="absolute top-5 right-5 text-white/60 hover:text-white transition" id="closeMobileMenu" aria-label="Close menu">
+            <i class="fas fa-times text-xl"></i>
+        </button>
+        <div class="mt-16 flex flex-col gap-2">
+            <a href="#services" class="mobile-link block px-4 py-3 text-white/80 hover:text-white hover:bg-white/5 rounded-xl transition font-medium">Services</a>
+            <a href="#features" class="mobile-link block px-4 py-3 text-white/80 hover:text-white hover:bg-white/5 rounded-xl transition font-medium">Features</a>
+            <a href="#portfolio" class="mobile-link block px-4 py-3 text-white/80 hover:text-white hover:bg-white/5 rounded-xl transition font-medium">Portfolio</a>
+            <a href="#contact" class="mobile-link block px-4 py-3 mt-4 text-center bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl font-semibold">Contact Me</a>
+        </div>
+    </div>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero-gradient text-white pt-32 pb-24 px-6 min-h-[90vh] flex items-center relative">
+        <!-- Floating particles -->
+        <div class="particle particle-1"></div>
+        <div class="particle particle-2"></div>
+        <div class="particle particle-3"></div>
+        <div class="particle particle-4"></div>
+        <div class="particle particle-5"></div>
+
+        <div class="container mx-auto relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="lg:w-1/2">
+                    <div class="section-badge mb-6" style="background: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.3); color: #c4b5fd;">
+                        <i class="fas fa-bolt text-yellow-400"></i>
+                        AI-Powered Automation
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold font-display leading-tight mb-6">
+                        Google Sheets
+                        <span class="block mt-2" style="background: linear-gradient(135deg, #c4b5fd, #93c5fd, #f9a8d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            Automation Expert
+                        </span>
+                    </h1>
+                    <p class="text-lg text-gray-300 mb-10 leading-relaxed max-w-xl">
+                        Streamline your workflows with custom Google Sheets automation, advanced formatting, and professional reporting solutions powered by AI.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#contact" class="btn-glow inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-violet-600 to-blue-600 text-white font-semibold rounded-2xl hover:shadow-2xl hover:shadow-violet-500/25 transition-all hover:-translate-y-1 text-base">
+                            Get Started <i class="fas fa-arrow-right text-sm"></i>
+                        </a>
+                        <a href="#portfolio" class="inline-flex items-center gap-2 px-8 py-4 border border-white/20 text-white font-semibold rounded-2xl hover:bg-white/5 transition-all hover:-translate-y-1 text-base">
+                            View Work <i class="fas fa-eye text-sm"></i>
+                        </a>
+                    </div>
+
+                    <!-- Mini stats -->
+                    <div class="flex gap-8 mt-12 pt-8 border-t border-white/10">
+                        <div>
+                            <div class="text-2xl font-bold font-display">50+</div>
+                            <div class="text-sm text-gray-400">Projects Done</div>
                         </div>
-                        <div class="absolute inset-0 animate-slide" style="transform: rotateY(-8deg) rotateX(5deg) translateZ(40px); filter: drop-shadow(0 20px 20px rgba(0,0,0,0.2)); animation-delay: 2s;">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/028a8514-a22e-4325-8156-1e348d21a171.png" alt="Google Sheet report example" class="w-full h-full rounded-xl object-cover border border-white/20" loading="lazy" width="600" height="400">
+                        <div>
+                            <div class="text-2xl font-bold font-display">100%</div>
+                            <div class="text-sm text-gray-400">Client Satisfaction</div>
                         </div>
-                        <div class="absolute inset-0 animate-slide" style="transform: rotateY(12deg) rotateX(5deg) translateZ(20px); filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1)); animation-delay: 4s;">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b13c4424-17ae-433e-8779-7edd23fc19d6.png" alt="Google Sheet report example" class="w-full h-full rounded-xl object-cover border border-white/20" loading="lazy" width="600" height="400">
+                        <div>
+                            <div class="text-2xl font-bold font-display">3+</div>
+                            <div class="text-sm text-gray-400">Years Experience</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Image Slideshow -->
+                <div class="lg:w-1/2">
+                    <div class="hero-image-container">
+                        <div class="hero-slide active" data-slide="0">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/13b2d267-568b-4aae-b7a7-655e8f4b37db.png" alt="Google Sheet report example" loading="lazy" width="600" height="400">
+                        </div>
+                        <div class="hero-slide" data-slide="1">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/028a8514-a22e-4325-8156-1e348d21a171.png" alt="Google Sheet report example" loading="lazy" width="600" height="400">
+                        </div>
+                        <div class="hero-slide" data-slide="2">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b13c4424-17ae-433e-8779-7edd23fc19d6.png" alt="Google Sheet report example" loading="lazy" width="600" height="400">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Wave divider -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="w-full h-16 md:h-24">
+                <path d="M0,80 C300,120 900,40 1200,80 L1200,120 L0,120 Z" fill="#ffffff"></path>
+            </svg>
+        </div>
     </section>
-    <!-- Services Section -->
-    <section id="services" class="py-16 px-6 bg-white animate-on-scroll">
+
+    <!-- ==================== SERVICES SECTION ==================== -->
+    <section id="services" class="py-24 px-6 bg-white">
         <div class="container mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-12">Specialized Services</h2>
+            <div class="text-center mb-16 animate-on-scroll">
+                <div class="section-badge mb-4"><i class="fas fa-cog"></i> What I Offer</div>
+                <h2 class="text-3xl md:text-4xl font-bold font-display mb-4">Specialized Services</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Comprehensive Google Sheets solutions to automate your workflows and boost productivity.</p>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="service-card bg-gray-50 p-8 rounded-lg shadow-md transition duration-300">
-                    <div class="text-4xl text-purple-600 mb-4" aria-hidden="true">
-                        <i class="fas fa-file-excel"></i>
+                <!-- Card 1 -->
+                <div class="service-card p-8 animate-on-scroll delay-1">
+                    <div class="service-icon-wrap bg-violet-50 mb-6">
+                        <i class="fas fa-file-excel text-2xl text-violet-600"></i>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3">Google Sheets Automation</h3>
-                    <p class="mb-4">Automate data entry, calculations, and reporting in Google Sheets with custom scripts and integrations.</p>
-                    <ul class="list-disc pl-5 space-y-1 text-sm">
-                        <li>Custom formulas and macros</li>
-                        <li>Data import/export automation</li>
-                        <li>Dashboard creation</li>
+                    <h3 class="text-xl font-bold font-display mb-3">Google Sheets Automation</h3>
+                    <p class="text-gray-500 mb-5 leading-relaxed">Automate data entry, calculations, and reporting with custom scripts and smart integrations.</p>
+                    <ul class="space-y-2.5">
+                        <li class="flex items-center gap-2.5 text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 text-xs"></i> Custom formulas & macros
+                        </li>
+                        <li class="flex items-center gap-2.5 text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 text-xs"></i> Data import/export automation
+                        </li>
+                        <li class="flex items-center gap-2.5 text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 text-xs"></i> Dashboard creation
+                        </li>
                     </ul>
                 </div>
-                <div class="service-card bg-gray-50 p-8 rounded-lg shadow-md transition duration-300">
-                    <div class="text-4xl text-purple-600 mb-4" aria-hidden="true">
-                        <i class="fas fa-table"></i>
+
+                <!-- Card 2 -->
+                <div class="service-card p-8 animate-on-scroll delay-2">
+                    <div class="service-icon-wrap bg-blue-50 mb-6">
+                        <i class="fas fa-table text-2xl text-blue-600"></i>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3">Advanced Formatting</h3>
-                    <p class="mb-4">Create professional, visually appealing spreadsheets with custom conditional formatting and data validation.</p>
-                    <ul class="list-disc pl-5 space-y-1 text-sm">
-                        <li>Conditional formatting rules</li>
-                        <li>Data validation setups</li>
-                        <li>Custom styling templates</li>
+                    <h3 class="text-xl font-bold font-display mb-3">Advanced Formatting</h3>
+                    <p class="text-gray-500 mb-5 leading-relaxed">Create professional, visually appealing spreadsheets with custom formatting and validation.</p>
+                    <ul class="space-y-2.5">
+                        <li class="flex items-center gap-2.5 text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 text-xs"></i> Conditional formatting rules
+                        </li>
+                        <li class="flex items-center gap-2.5 text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 text-xs"></i> Data validation setups
+                        </li>
+                        <li class="flex items-center gap-2.5 text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 text-xs"></i> Custom styling templates
+                        </li>
                     </ul>
                 </div>
-                <div class="service-card bg-gray-50 p-8 rounded-lg shadow-md transition duration-300">
-                    <div class="text-4xl text-purple-600 mb-4" aria-hidden="true">
-                        <i class="fas fa-envelope"></i>
+
+                <!-- Card 3 -->
+                <div class="service-card p-8 animate-on-scroll delay-3">
+                    <div class="service-icon-wrap bg-pink-50 mb-6">
+                        <i class="fas fa-envelope text-2xl text-pink-600"></i>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3">Email Automation</h3>
-                    <p class="mb-4">Set up automatic email workflows triggered by specific events or data changes.</p>
-                    <ul class="list-disc pl-5 space-y-1 text-sm">
-                        <li>Conditional email triggers</li>
-                        <li>Personalized templates</li>
-                        <li>Attachment automation</li>
+                    <h3 class="text-xl font-bold font-display mb-3">Email Automation</h3>
+                    <p class="text-gray-500 mb-5 leading-relaxed">Set up automatic email workflows triggered by specific events or data changes.</p>
+                    <ul class="space-y-2.5">
+                        <li class="flex items-center gap-2.5 text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 text-xs"></i> Conditional email triggers
+                        </li>
+                        <li class="flex items-center gap-2.5 text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 text-xs"></i> Personalized templates
+                        </li>
+                        <li class="flex items-center gap-2.5 text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 text-xs"></i> Attachment automation
+                        </li>
                     </ul>
                 </div>
             </div>
-            <div class="mt-16 bg-white rounded-xl shadow-xl overflow-hidden">
-                <div class="flex border-b" role="tablist">
-                    <button class="px-4 py-2 font-medium border-b-2 border-purple-600" role="tab" aria-selected="true">Summary</button>
-                    <button class="px-4 py-2 font-medium text-gray-500" role="tab">Charts</button>
-                    <button class="px-4 py-2 font-medium text-gray-500" role="tab">Details</button>
-                </div>
-                <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="border rounded-lg p-4">
-                        <h4 class="font-semibold mb-2">Monthly Sales</h4>
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ec530849-feda-45f1-ab5e-aff1bb53083a.png" alt="Bar chart visualization showing monthly sales data" class="w-full" loading="lazy" width="400" height="300">
+
+            <!-- Interactive Preview -->
+            <div class="mt-20 animate-on-scroll">
+                <div class="bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+                    <div class="flex items-center gap-2 px-6 py-3 border-b border-gray-100 bg-white">
+                        <div class="flex gap-1.5">
+                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                        </div>
+                        <div class="flex ml-4 gap-1" role="tablist">
+                            <button class="tab-btn px-4 py-1.5 text-sm font-medium rounded-lg bg-violet-100 text-violet-700" role="tab" data-tab="summary" aria-selected="true">Summary</button>
+                            <button class="tab-btn px-4 py-1.5 text-sm font-medium rounded-lg text-gray-500 hover:bg-gray-100" role="tab" data-tab="charts">Charts</button>
+                            <button class="tab-btn px-4 py-1.5 text-sm font-medium rounded-lg text-gray-500 hover:bg-gray-100" role="tab" data-tab="details">Details</button>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+                                <h4 class="font-semibold text-sm text-gray-500 mb-3 uppercase tracking-wide">Monthly Sales</h4>
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ec530849-feda-45f1-ab5e-aff1bb53083a.png" alt="Monthly sales chart" class="w-full rounded-lg" loading="lazy" width="400" height="300">
+                            </div>
+                            <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+                                <h4 class="font-semibold text-sm text-gray-500 mb-3 uppercase tracking-wide">Trend Analysis</h4>
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d885cee5-dcc5-4e4e-aafb-9e5d6a18bbc9.png" alt="Trend analysis chart" class="w-full rounded-lg" loading="lazy" width="400" height="300">
+                            </div>
+                            <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+                                <h4 class="font-semibold text-sm text-gray-500 mb-3 uppercase tracking-wide">Dashboard</h4>
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0c55b892-1734-408f-9267-d7858814de2c.png" alt="Dashboard preview" class="w-full rounded-lg" loading="lazy" width="400" height="300">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Dynamic Charts Preview -->
-    <section class="py-16 px-6 bg-gradient-to-r from-indigo-50 to-purple-50 animate-on-scroll">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-8">Interactive Chart Visualizations</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all">
-                    <div class="h-48 flex items-center justify-center">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d885cee5-dcc5-4e4e-aafb-9e5d6a18bbc9.png" alt="Interactive line chart visualization showing data trends" class="w-full h-full object-contain" loading="lazy" width="400" height="300">
+
+    <!-- ==================== FEATURES SECTION ==================== -->
+    <section id="features" class="py-24 px-6 bg-gray-50 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-violet-100/50 to-transparent rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-blue-100/50 to-transparent rounded-full blur-3xl"></div>
+
+        <div class="container mx-auto relative z-10">
+            <div class="text-center mb-16 animate-on-scroll">
+                <div class="section-badge mb-4"><i class="fas fa-star"></i> Why Choose Me</div>
+                <h2 class="text-3xl md:text-4xl font-bold font-display mb-4">Powerful Features</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">From data collection to automated reporting - everything you need for efficient workflows.</p>
+            </div>
+
+            <!-- Feature Block 1 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20 animate-on-scroll">
+                <div class="order-2 lg:order-1">
+                    <div class="rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0c55b892-1734-408f-9267-d7858814de2c.png" alt="Dashboard with colorful charts" class="w-full" loading="lazy" width="600" height="400">
                     </div>
-                    <h3 class="text-xl font-semibold mt-4">Trend Analysis</h3>
+                </div>
+                <div class="order-1 lg:order-2">
+                    <h3 class="text-2xl md:text-3xl font-bold font-display mb-4">Custom Report Generation</h3>
+                    <p class="text-gray-500 mb-6 leading-relaxed">Transform raw data into professional, formatted reports automatically. Schedule reports to be generated and distributed on a recurring basis.</p>
+                    <div class="space-y-1">
+                        <div class="feature-item">
+                            <div class="feature-icon-sm"><i class="fas fa-chart-bar"></i></div>
+                            <div>
+                                <div class="font-semibold text-sm">Advanced Data Analysis</div>
+                                <div class="text-xs text-gray-400">AI-powered insights from your data</div>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-sm"><i class="fas fa-file-export"></i></div>
+                            <div>
+                                <div class="font-semibold text-sm">Multi-Format Export</div>
+                                <div class="text-xs text-gray-400">PDF, Excel, Slides & more</div>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-sm"><i class="fas fa-palette"></i></div>
+                            <div>
+                                <div class="font-semibold text-sm">Branded Templates</div>
+                                <div class="text-xs text-gray-400">Match your company style</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- Features Section -->
-    <section id="features" class="py-16 px-6 bg-gray-50 animate-on-scroll">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-12">Powerful Features</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+
+            <!-- Feature Block 2 - Workflow -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center animate-on-scroll">
                 <div>
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0c55b892-1734-408f-9267-d7858814de2c.png" alt="Dashboard showing Google Sheets with colorful charts" class="rounded-lg" loading="lazy" width="600" height="400">
-                </div>
-                <div>
-                    <h3 class="text-2xl font-semibold mb-4">Custom Report Generation</h3>
-                    <p class="mb-6">Transform raw data into professional, formatted reports automatically. Schedule reports to be generated and distributed on a recurring basis.</p>
-                    <ul class="space-y-3">
-                        <li class="ai-feature font-medium">Advanced data analysis techniques</li>
-                        <li class="ai-feature font-medium">Multi-format export options (PDF, Excel, Slides)</li>
-                        <li class="ai-feature font-medium">Branded templates matching your company style</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="order-last md:order-first">
-                    <h3 class="text-2xl font-semibold mb-4">Workflow Automation</h3>
-                    <p class="mb-6">Connect multiple services and eliminate manual tasks with seamless automation:</p>
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <div class="flex items-start mb-4">
-                            <div class="bg-purple-100 p-3 rounded-full mr-4" aria-hidden="true">
-                                <i class="fas fa-database text-purple-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold">Data Collection</h4>
-                                <p class="text-sm text-gray-600">Automatic data collection from forms, emails, or APIs into Google Sheets</p>
-                            </div>
+                    <h3 class="text-2xl md:text-3xl font-bold font-display mb-4">Workflow Automation</h3>
+                    <p class="text-gray-500 mb-8 leading-relaxed">Connect multiple services and eliminate manual tasks with seamless end-to-end automation.</p>
+
+                    <div class="space-y-6">
+                        <div class="workflow-step">
+                            <div class="workflow-number">1</div>
+                            <h4 class="font-bold text-base mb-1">Data Collection</h4>
+                            <p class="text-sm text-gray-500">Automatic data collection from forms, emails, or APIs into Google Sheets</p>
                         </div>
-                        <div class="flex items-start mb-4">
-                            <div class="bg-purple-100 p-3 rounded-full mr-4" aria-hidden="true">
-                                <i class="fas fa-sliders-h text-purple-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold">Data Processing</h4>
-                                <p class="text-sm text-gray-600">Advanced formulas process and categorize your incoming data</p>
-                            </div>
+                        <div class="workflow-step">
+                            <div class="workflow-number">2</div>
+                            <h4 class="font-bold text-base mb-1">Data Processing</h4>
+                            <p class="text-sm text-gray-500">Advanced formulas process and categorize your incoming data</p>
                         </div>
-                        <div class="flex items-start mb-4">
-                            <div class="bg-purple-100 p-3 rounded-full mr-4" aria-hidden="true">
-                                <i class="fas fa-file-export text-purple-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold">Report Generation</h4>
-                                <p class="text-sm text-gray-600">Custom reports created in your preferred format</p>
-                            </div>
+                        <div class="workflow-step">
+                            <div class="workflow-number">3</div>
+                            <h4 class="font-bold text-base mb-1">Report Generation</h4>
+                            <p class="text-sm text-gray-500">Custom reports created automatically in your preferred format</p>
                         </div>
-                        <div class="flex items-start">
-                            <div class="bg-purple-100 p-3 rounded-full mr-4" aria-hidden="true">
-                                <i class="fas fa-paper-plane text-purple-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold">Distribution</h4>
-                                <p class="text-sm text-gray-600">Reports automatically emailed to recipients</p>
-                            </div>
+                        <div class="workflow-step">
+                            <div class="workflow-number">4</div>
+                            <h4 class="font-bold text-base mb-1">Distribution</h4>
+                            <p class="text-sm text-gray-500">Reports automatically emailed to all recipients on schedule</p>
                         </div>
                     </div>
                 </div>
-                <div class="order-first md:order-last">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/bfc717cb-dbf8-4fb4-a873-31edda17d3bb.png" alt="Flowchart showing the automation process" class="rounded-lg" loading="lazy" width="600" height="400">
+                <div>
+                    <div class="rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/bfc717cb-dbf8-4fb4-a873-31edda17d3bb.png" alt="Automation workflow" class="w-full" loading="lazy" width="600" height="400">
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- HTML Reports Section -->
-    <section class="py-16 px-6 relative overflow-hidden animate-on-scroll">
-        <div class="absolute inset-0 bg-gradient-to-r from-indigo-100 to-purple-100 opacity-50"></div>
-        <div class="relative z-10 container mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-12">Interactive HTML Reports</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+
+    <!-- ==================== HTML REPORTS SECTION ==================== -->
+    <section class="py-24 px-6 bg-white relative overflow-hidden">
+        <div class="container mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <div class="section-badge mb-4"><i class="fas fa-code"></i> Interactive Reports</div>
+                <h2 class="text-3xl md:text-4xl font-bold font-display mb-4">Custom HTML Dashboards</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Professionally designed HTML reports with interactive elements and real-time data.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center animate-on-scroll">
                 <div class="relative">
-                    <div class="mockup-browser border bg-base-300 shadow-lg">
-                        <div class="mockup-browser-toolbar">
-                            <div class="input">https://report.example.com/dashboard</div>
+                    <!-- Browser mockup -->
+                    <div class="bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+                        <div class="flex items-center gap-2 px-4 py-3 bg-gray-100 border-b border-gray-200">
+                            <div class="flex gap-1.5">
+                                <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                            </div>
+                            <div class="flex-1 mx-4">
+                                <div class="bg-white rounded-lg px-4 py-1.5 text-xs text-gray-400 border border-gray-200">
+                                    <i class="fas fa-lock text-green-500 mr-1"></i> https://report.example.com/dashboard
+                                </div>
+                            </div>
                         </div>
-                        <div class="px-4 py-8 bg-base-200">
-                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/85a62dca-cffa-4040-a9c7-9b4c0688199f.png" alt="Interactive HTML dashboard report" class="rounded-lg" loading="lazy" width="600" height="400">
-                        </div>
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/85a62dca-cffa-4040-a9c7-9b4c0688199f.png" alt="Interactive HTML dashboard" class="w-full" loading="lazy" width="600" height="400">
                     </div>
-                    <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-lg shadow-lg transform rotate-3">
-                        <p class="text-sm font-medium">Real-time data updates</p>
+                    <!-- Floating badge -->
+                    <div class="absolute -bottom-4 -right-4 bg-gradient-to-r from-violet-600 to-blue-600 text-white px-4 py-2 rounded-xl shadow-lg text-sm font-semibold">
+                        <i class="fas fa-sync-alt mr-1"></i> Real-time Updates
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-semibold mb-4">Custom HTML Dashboards</h3>
-                    <p class="mb-6">Professionally designed HTML reports with interactive elements:</p>
-                    <ul class="space-y-3">
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-chart-line text-purple-600 mt-1" aria-hidden="true"></i>
-                            <span>Dynamic charts and visualizations</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-table text-purple-600 mt-1" aria-hidden="true"></i>
-                            <span>Sortable/filterable data tables</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-sync-alt text-purple-600 mt-1" aria-hidden="true"></i>
-                            <span>Auto-refreshing data from Sheets</span>
-                        </li>
+                    <div class="space-y-5">
+                        <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl hover:bg-violet-50 transition">
+                            <div class="w-12 h-12 min-w-[3rem] rounded-xl bg-gradient-to-br from-violet-500 to-violet-600 flex items-center justify-center text-white">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">Dynamic Visualizations</h4>
+                                <p class="text-sm text-gray-500">Interactive charts that update automatically from your Sheets data</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition">
+                            <div class="w-12 h-12 min-w-[3rem] rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white">
+                                <i class="fas fa-table"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">Sortable Data Tables</h4>
+                                <p class="text-sm text-gray-500">Filterable and searchable data tables for easy analysis</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl hover:bg-pink-50 transition">
+                            <div class="w-12 h-12 min-w-[3rem] rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center text-white">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">Responsive Design</h4>
+                                <p class="text-sm text-gray-500">Reports that look perfect on any device - desktop, tablet, or mobile</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PORTFOLIO SECTION ==================== -->
+    <section id="portfolio" class="py-24 px-6 bg-gray-50">
+        <div class="container mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <div class="section-badge mb-4"><i class="fas fa-briefcase"></i> My Work</div>
+                <h2 class="text-3xl md:text-4xl font-bold font-display mb-4">Work Examples</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Real projects showcasing automation, reporting, and data visualization solutions.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Portfolio 1 -->
+                <div class="portfolio-card animate-on-scroll delay-1">
+                    <div class="h-52 overflow-hidden">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4036b8f8-650c-4436-85c1-0e96ced919b2.png" alt="Sales data visualization" class="portfolio-img w-full h-full object-cover" loading="lazy" width="400" height="300">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg font-display mb-2">Sales Report Automation</h3>
+                        <p class="text-gray-500 text-sm mb-4 leading-relaxed">Automated daily sales reports with AI-powered insights generated from CRM data.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tech-tag bg-violet-100 text-violet-700">Google Sheets</span>
+                            <span class="tech-tag bg-blue-100 text-blue-700">AI Integration</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portfolio 2 -->
+                <div class="portfolio-card animate-on-scroll delay-2">
+                    <div class="h-52 overflow-hidden">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f0f705d8-b025-41dd-b416-6aed87b0d003.png" alt="Email automation interface" class="portfolio-img w-full h-full object-cover" loading="lazy" width="400" height="300">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg font-display mb-2">Email Workflows</h3>
+                        <p class="text-gray-500 text-sm mb-4 leading-relaxed">Conditional email triggers with personalized content based on spreadsheet data.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tech-tag bg-pink-100 text-pink-700">Email Automation</span>
+                            <span class="tech-tag bg-green-100 text-green-700">Gmail API</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portfolio 3 -->
+                <div class="portfolio-card animate-on-scroll delay-3">
+                    <div class="h-52 overflow-hidden">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b8ebf223-f9e4-48a4-a102-5efc4305facc.png" alt="Advanced spreadsheet formulas" class="portfolio-img w-full h-full object-cover" loading="lazy" width="400" height="300">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg font-display mb-2">Custom Sheet Formulas</h3>
+                        <p class="text-gray-500 text-sm mb-4 leading-relaxed">Advanced custom functions for financial modeling and data analysis.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tech-tag bg-amber-100 text-amber-700">Apps Script</span>
+                            <span class="tech-tag bg-yellow-100 text-yellow-700">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CONTACT SECTION ==================== -->
+    <section id="contact" class="py-24 px-6 bg-white relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-violet-50 to-transparent rounded-full blur-3xl opacity-60"></div>
+
+        <div class="container mx-auto max-w-5xl relative z-10">
+            <div class="text-center mb-16 animate-on-scroll">
+                <div class="section-badge mb-4"><i class="fas fa-envelope"></i> Let's Talk</div>
+                <h2 class="text-3xl md:text-4xl font-bold font-display mb-4">Get In Touch</h2>
+                <p class="text-gray-500 max-w-xl mx-auto">Have a project in mind? Fill out the form below and I'll get back to you within 24 hours.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 animate-on-scroll">
+                <!-- Contact Info -->
+                <div class="lg:col-span-2">
+                    <div class="bg-gradient-to-br from-violet-600 to-blue-600 rounded-2xl p-8 text-white h-full">
+                        <h3 class="text-xl font-bold font-display mb-6">Contact Information</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-envelope text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-white/60 mb-0.5">Email</div>
+                                    <a href="mailto:vinaykumarparashar@gmail.com" class="text-sm hover:underline">vinaykumarparashar@gmail.com</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-map-marker-alt text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-white/60 mb-0.5">Location</div>
+                                    <div class="text-sm">India</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-clock text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-white/60 mb-0.5">Response Time</div>
+                                    <div class="text-sm">Within 24 hours</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social links -->
+                        <div class="mt-10 pt-6 border-t border-white/15">
+                            <div class="text-sm text-white/60 mb-4">Connect with me</div>
+                            <div class="flex gap-3">
+                                <a href="mailto:vinaykumarparashar@gmail.com" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition" aria-label="Email">
+                                    <i class="fas fa-envelope text-sm"></i>
+                                </a>
+                                <a href="https://linkedin.com" target="_blank" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition" aria-label="LinkedIn">
+                                    <i class="fab fa-linkedin-in text-sm"></i>
+                                </a>
+                                <a href="https://github.com" target="_blank" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition" aria-label="GitHub">
+                                    <i class="fab fa-github text-sm"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="lg:col-span-3">
+                    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+                        <div id="formMessage" class="text-center mb-6 p-4 rounded-xl hidden"></div>
+                        <form id="contactForm" aria-label="Contact form">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                                <div>
+                                    <label for="name" class="form-label">Your Name</label>
+                                    <input type="text" id="name" name="name" class="form-input-modern" placeholder="John Doe" required>
+                                    <p class="text-red-500 text-xs mt-1.5 hidden" id="nameError">Please enter your name</p>
+                                </div>
+                                <div>
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" id="email" name="email" class="form-input-modern" placeholder="john@example.com" required>
+                                    <p class="text-red-500 text-xs mt-1.5 hidden" id="emailError">Please enter a valid email</p>
+                                </div>
+                            </div>
+                            <div class="mb-5">
+                                <label for="service" class="form-label">Service Needed</label>
+                                <select id="service" name="service" class="form-input-modern" required>
+                                    <option value="">Select a service...</option>
+                                    <option value="sheets">Google Sheets Automation</option>
+                                    <option value="formatting">Advanced Formatting</option>
+                                    <option value="email">Email Automation</option>
+                                    <option value="reports">Report Generation</option>
+                                    <option value="custom">Custom Solution</option>
+                                </select>
+                                <p class="text-red-500 text-xs mt-1.5 hidden" id="serviceError">Please select a service</p>
+                            </div>
+                            <div class="mb-6">
+                                <label for="message" class="form-label">Project Details</label>
+                                <textarea id="message" name="message" rows="4" class="form-input-modern resize-none" placeholder="Tell me about your project requirements..." required></textarea>
+                                <p class="text-red-500 text-xs mt-1.5 hidden" id="messageError">Please provide project details</p>
+                            </div>
+                            <button type="submit" id="submitBtn" class="w-full py-4 px-6 bg-gradient-to-r from-violet-600 to-blue-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-violet-500/25 transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 text-base">
+                                <i class="fas fa-paper-plane mr-2"></i> Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer-gradient text-white pt-16 pb-8 px-6 relative">
+        <div class="absolute top-0 left-0 w-full overflow-hidden leading-none rotate-180">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="w-full h-12">
+                <path d="M0,80 C300,120 900,40 1200,80 L1200,120 L0,120 Z" fill="#ffffff"></path>
+            </svg>
+        </div>
+
+        <div class="container mx-auto relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg font-display">V</div>
+                        <span class="text-xl font-bold font-display">Vinay Parashar</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">Google Sheets Automation Expert helping businesses streamline their workflows with custom solutions.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold font-display mb-4">Quick Links</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition text-sm">Services</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition text-sm">Features</a></li>
+                        <li><a href="#portfolio" class="text-gray-400 hover:text-white transition text-sm">Portfolio</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition text-sm">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold font-display mb-4">Services</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition text-sm">Sheets Automation</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition text-sm">Advanced Formatting</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition text-sm">Email Automation</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition text-sm">Custom Solutions</a></li>
                     </ul>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="py-16 px-6 bg-white animate-on-scroll">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-12">Work Examples</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-gray-50 rounded-lg overflow-hidden shadow-md">
-                    <div class="h-48 bg-purple-100 flex items-center justify-center">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4036b8f8-650c-4436-85c1-0e96ced919b2.png" alt="Sales data visualization dashboard" class="h-full w-full object-cover" loading="lazy" width="400" height="300">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-semibold text-lg mb-2">Sales Report Automation</h3>
-                        <p class="text-gray-600 text-sm mb-4">Automated daily sales reports with AI-powered insights generated from CRM data.</p>
-                        <span class="inline-block bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Google Sheets</span>
-                        <span class="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full ml-2">AI Integration</span>
-                    </div>
-                </div>
-                <div class="bg-gray-50 rounded-lg overflow-hidden shadow-md">
-                    <div class="h-48 bg-purple-100 flex items-center justify-center">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f0f705d8-b025-41dd-b416-6aed87b0d003.png" alt="Automated email interface" class="h-full w-full object-cover" loading="lazy" width="400" height="300">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-semibold text-lg mb-2">Email Workflows</h3>
-                        <p class="text-gray-600 text-sm mb-4">Conditional email triggers with personalized content based on spreadsheet data.</p>
-                        <span class="inline-block bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Email Automation</span>
-                        <span class="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full ml-2">Gmail API</span>
-                    </div>
-                </div>
-                <div class="bg-gray-50 rounded-lg overflow-hidden shadow-md">
-                    <div class="h-48 bg-purple-100 flex items-center justify-center">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b8ebf223-f9e4-48a4-a102-5efc4305facc.png" alt="Advanced spreadsheet formulas" class="h-full w-full object-cover" loading="lazy" width="400" height="300">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-semibold text-lg mb-2">Custom Sheet Formulas</h3>
-                        <p class="text-gray-600 text-sm mb-4">Advanced custom functions for financial modeling and data analysis.</p>
-                        <span class="inline-block bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Google Apps Script</span>
-                        <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full ml-2">JavaScript</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Contact Form -->
-    <section id="contact" class="py-16 px-6 bg-gray-50 animate-on-scroll">
-        <div class="container mx-auto max-w-4xl">
-            <h2 class="text-3xl font-bold text-center mb-12">Get In Touch</h2>
-            <div class="bg-white rounded-lg shadow-md p-8">
-                <div id="formMessage" class="text-center mb-4 p-4 rounded-md"></div>
-                <form id="contactForm" aria-label="Contact form">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                            <input type="text" id="name" name="name" class="form-input w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
-                            <p class="text-red-500 text-xs mt-1 hidden" id="nameError">Please enter your name</p>
-                        </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input type="email" id="email" name="email" class="form-input w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
-                            <p class="text-red-500 text-xs mt-1 hidden" id="emailError">Please enter a valid email</p>
-                        </div>
-                    </div>
-                    <div class="mb-6">
-                        <label for="service" class="block text-sm font-medium text-gray-700 mb-1">Service Needed</label>
-                        <select id="service" name="service" class="form-input w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
-                            <option value="">Select a service</option>
-                            <option value="sheets">Google Sheets Automation</option>
-                            <option value="formatting">Advanced Formatting</option>
-                            <option value="email">Email Automation</option>
-                            <option value="reports">Report Generation</option>
-                            <option value="custom">Custom Solution</option>
-                        </select>
-                        <p class="text-red-500 text-xs mt-1 hidden" id="serviceError">Please select a service</p>
-                    </div>
-                    <div class="mb-6">
-                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Project Details</label>
-                        <textarea id="message" name="message" rows="5" class="form-input w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Describe your project requirements..." required></textarea>
-                        <p class="text-red-500 text-xs mt-1 hidden" id="messageError">Please provide project details</p>
-                    </div>
-                    <button type="submit" id="submitBtn" class="w-full bg-purple-600 text-white py-3 px-6 rounded-md hover:bg-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                        Submit Inquiry
-                    </button>
-                </form>
-            </div>
-            <div class="mt-8 text-center">
-                <div class="flex justify-center space-x-6">
-                    <a href="mailto:contact@example.com" class="text-gray-600 hover:text-purple-600 transition" aria-label="Email">
-                        <i class="fas fa-envelope text-2xl"></i>
+
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-400 text-sm">&copy; 2025 Vinay Parashar. All Rights Reserved.</p>
+                <div class="flex gap-3">
+                    <a href="mailto:vinaykumarparashar@gmail.com" class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition text-sm" aria-label="Email">
+                        <i class="fas fa-envelope"></i>
                     </a>
-                    <a href="https://linkedin.com" class="text-gray-600 hover:text-purple-600 transition" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin text-2xl"></i>
+                    <a href="https://linkedin.com" target="_blank" class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition text-sm" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
                     </a>
-                    <a href="https://github.com" class="text-gray-600 hover:text-purple-600 transition" aria-label="GitHub">
-                        <i class="fab fa-github text-2xl"></i>
+                    <a href="https://github.com" target="_blank" class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition text-sm" aria-label="GitHub">
+                        <i class="fab fa-github"></i>
                     </a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Footer -->
-    <footer class="gradient-bg text-white py-8 px-6">
-        <div class="container mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <h3 class="text-xl font-bold">Vinay Parashar</h3>
-                    <p class="text-sm mt-1">Spreadsheet Automation Expert</p>
-                </div>
-                <div class="flex flex-col items-center md:items-end">
-                    <p class="text-sm mb-2">&copy; 2025 All Rights Reserved</p>
-                    <ul class="flex space-x-4">
-                        <li><a href="#" class="text-sm hover:text-gray-200 transition">Privacy Policy</a></li>
-                        <li><a href="#" class="text-sm hover:text-gray-200 transition">Terms of Service</a></li>
-                    </ul>
                 </div>
             </div>
         </div>
     </footer>
-    <!-- JavaScript -->
+
+    <!-- ==================== JAVASCRIPT ==================== -->
     <script>
-        // Mobile menu
+        // ===== Navbar scroll effect =====
+        var navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ===== Mobile menu =====
         var mobileMenuToggle = document.getElementById('mobileMenuToggle');
         var mobileMenu = document.getElementById('mobileMenu');
+        var mobileOverlay = document.getElementById('mobileOverlay');
         var closeMobileMenuBtn = document.getElementById('closeMobileMenu');
-        if (mobileMenuToggle && mobileMenu && closeMobileMenuBtn) {
-            mobileMenuToggle.addEventListener('click', function() { mobileMenu.classList.toggle('open'); });
-            closeMobileMenuBtn.addEventListener('click', function() { mobileMenu.classList.remove('open'); });
-        }
 
-        // Smooth scrolling
+        function openMobile() {
+            mobileMenu.classList.add('open');
+            mobileOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMobile() {
+            mobileMenu.classList.remove('open');
+            mobileOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        mobileMenuToggle.addEventListener('click', openMobile);
+        closeMobileMenuBtn.addEventListener('click', closeMobile);
+        mobileOverlay.addEventListener('click', closeMobile);
+        document.querySelectorAll('.mobile-link').forEach(function(link) {
+            link.addEventListener('click', closeMobile);
+        });
+
+        // ===== Smooth scrolling =====
         document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 var targetId = this.getAttribute('href');
                 if (targetId === '#') return;
-                var targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
-                    if (mobileMenu) mobileMenu.classList.remove('open');
+                var target = document.querySelector(targetId);
+                if (target) {
+                    var offset = 80;
+                    var pos = target.getBoundingClientRect().top + window.scrollY - offset;
+                    window.scrollTo({ top: pos, behavior: 'smooth' });
                 }
             });
         });
 
-        // =============================================
-        // FORM SUBMISSION - Hidden Iframe Method
-        // This works exactly like pasting URL in browser
-        // =============================================
+        // ===== Hero image slideshow =====
+        var heroSlides = document.querySelectorAll('.hero-slide');
+        var currentSlide = 0;
+        function nextSlide() {
+            heroSlides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % heroSlides.length;
+            heroSlides[currentSlide].classList.add('active');
+        }
+        if (heroSlides.length > 1) {
+            setInterval(nextSlide, 4000);
+        }
+
+        // ===== Scroll animations =====
+        var scrollObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(function(el) {
+            scrollObserver.observe(el);
+        });
+
+        // ===== Form Submission =====
         var contactForm = document.getElementById('contactForm');
         var submitBtn = document.getElementById('submitBtn');
         var formMessage = document.getElementById('formMessage');
 
         function showFormMessage(type, text) {
-            formMessage.style.display = 'block';
+            formMessage.classList.remove('hidden');
             formMessage.className = type === 'success'
-                ? 'text-center mb-4 p-4 rounded-md bg-green-100 text-green-700'
-                : 'text-center mb-4 p-4 rounded-md bg-red-100 text-red-700';
-            formMessage.textContent = text;
+                ? 'text-center mb-6 p-4 rounded-xl bg-green-50 text-green-700 border border-green-200'
+                : 'text-center mb-6 p-4 rounded-xl bg-red-50 text-red-700 border border-red-200';
+            formMessage.innerHTML = type === 'success'
+                ? '<i class="fas fa-check-circle mr-2"></i>' + text
+                : '<i class="fas fa-exclamation-circle mr-2"></i>' + text;
         }
 
         if (contactForm) {
             contactForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-
-                // Reset
                 document.querySelectorAll('.text-red-500').forEach(function(el) { el.classList.add('hidden'); });
-                formMessage.style.display = 'none';
+                formMessage.classList.add('hidden');
 
-                // Validate
                 var isValid = true;
                 var name = document.getElementById('name').value.trim();
                 var email = document.getElementById('email').value.trim();
@@ -511,25 +1160,22 @@
                 if (!message) { document.getElementById('messageError').classList.remove('hidden'); isValid = false; }
                 if (!isValid) return;
 
-                // Loading
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
+                submitBtn.innerHTML = '<span class="spinner"></span> Sending...';
 
-                // Create hidden iframe (same as opening URL in browser - which we tested and it worked!)
                 var iframe = document.createElement('iframe');
                 iframe.name = 'form_iframe_' + Date.now();
                 iframe.style.display = 'none';
                 document.body.appendChild(iframe);
 
                 var submitted = false;
-
                 function onSuccess() {
                     if (submitted) return;
                     submitted = true;
-                    showFormMessage('success', 'Thank you! Your inquiry has been submitted. We will contact you soon.');
+                    showFormMessage('success', 'Thank you! Your inquiry has been submitted. I will contact you soon.');
                     contactForm.reset();
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Submit Inquiry';
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Send Message';
                     setTimeout(function() {
                         if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
                     }, 3000);
@@ -537,7 +1183,6 @@
 
                 iframe.addEventListener('load', onSuccess);
 
-                // Build URL exactly like the browser test
                 var url = GOOGLE_SCRIPT_URL
                     + '?name=' + encodeURIComponent(name)
                     + '&email=' + encodeURIComponent(email)
@@ -545,21 +1190,9 @@
                     + '&message=' + encodeURIComponent(message);
 
                 iframe.src = url;
-
-                // Fallback timeout - show success after 8 seconds even if iframe load doesn't fire
-                setTimeout(function() {
-                    onSuccess();
-                }, 8000);
+                setTimeout(onSuccess, 8000);
             });
         }
-
-        // Scroll animations
-        var observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.animate-on-scroll').forEach(function(el) { observer.observe(el); });
     </script>
 </body>
 </html>
