@@ -94,14 +94,9 @@
     </style>
 </head>
 <body class="font-sans bg-gray-50 text-gray-800">
-
-    <!-- ======================= -->
-    <!-- IMPORTANT: Apna Google Apps Script Web App URL yahan paste karein -->
-    <!-- ======================= -->
     <script>
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxe1VWjIv6kjeleuHwjh9fxJZGTaK0Zg_JrnIvmJf-eZAbcYpEI1xJvYOBZ4384JnPs/exec';
     </script>
-
     <!-- Header -->
     <header class="gradient-bg text-white fixed w-full z-50">
         <nav class="container mx-auto px-6 py-4">
@@ -131,7 +126,6 @@
             </div>
         </nav>
     </header>
-
     <!-- Hero Section -->
     <section class="gradient-bg text-white py-24 px-6 pt-24 animate-on-scroll">
         <div class="container mx-auto flex flex-col md:flex-row items-center">
@@ -159,7 +153,6 @@
             </div>
         </div>
     </section>
-
     <!-- Services Section -->
     <section id="services" class="py-16 px-6 bg-white animate-on-scroll">
         <div class="container mx-auto">
@@ -217,7 +210,6 @@
             </div>
         </div>
     </section>
-
     <!-- Dynamic Charts Preview -->
     <section class="py-16 px-6 bg-gradient-to-r from-indigo-50 to-purple-50 animate-on-scroll">
         <div class="container mx-auto">
@@ -232,7 +224,6 @@
             </div>
         </div>
     </section>
-
     <!-- Features Section -->
     <section id="features" class="py-16 px-6 bg-gray-50 animate-on-scroll">
         <div class="container mx-auto">
@@ -300,7 +291,6 @@
             </div>
         </div>
     </section>
-
     <!-- HTML Reports Section -->
     <section class="py-16 px-6 relative overflow-hidden animate-on-scroll">
         <div class="absolute inset-0 bg-gradient-to-r from-indigo-100 to-purple-100 opacity-50"></div>
@@ -341,7 +331,6 @@
             </div>
         </div>
     </section>
-
     <!-- Portfolio Section -->
     <section id="portfolio" class="py-16 px-6 bg-white animate-on-scroll">
         <div class="container mx-auto">
@@ -383,7 +372,6 @@
             </div>
         </div>
     </section>
-
     <!-- Contact Form -->
     <section id="contact" class="py-16 px-6 bg-gray-50 animate-on-scroll">
         <div class="container mx-auto max-w-4xl">
@@ -391,7 +379,6 @@
             <div class="bg-white rounded-lg shadow-md p-8">
                 <!-- Success/Error Message -->
                 <div id="formMessage" class="text-center mb-4 p-4 rounded-md"></div>
-
                 <form id="contactForm" aria-label="Contact form">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
@@ -442,7 +429,6 @@
             </div>
         </div>
     </section>
-
     <!-- Footer -->
     <footer class="gradient-bg text-white py-8 px-6">
         <div class="container mx-auto">
@@ -461,7 +447,6 @@
             </div>
         </div>
     </footer>
-
     <!-- JavaScript -->
     <script>
         // Mobile menu toggle
@@ -492,26 +477,25 @@
             });
         });
 
-        // JSONP form submission (works across all domains, no CORS issues)
+        // Form submission using fetch (replaces JSONP)
         const contactForm = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
         const formMessage = document.getElementById('formMessage');
 
-        // JSONP callback function - Google Apps Script will call this
-        window.formCallback = function(result) {
-            if (result === 'success') {
-                formMessage.style.display = 'block';
+        function showMessage(type, text) {
+            formMessage.style.display = 'block';
+            if (type === 'success') {
                 formMessage.className = 'text-center mb-4 p-4 rounded-md bg-green-100 text-green-700';
-                formMessage.textContent = 'Thank you! Your inquiry has been submitted. We will contact you soon.';
-                contactForm.reset();
             } else {
-                formMessage.style.display = 'block';
                 formMessage.className = 'text-center mb-4 p-4 rounded-md bg-red-100 text-red-700';
-                formMessage.textContent = 'Something went wrong. Please try again.';
             }
+            formMessage.textContent = text;
+        }
+
+        function resetButton() {
             submitBtn.disabled = false;
             submitBtn.innerHTML = 'Submit Inquiry';
-        };
+        }
 
         if (contactForm) {
             contactForm.addEventListener('submit', function(e) {
@@ -521,6 +505,7 @@
                 document.querySelectorAll('.text-red-500').forEach(function(el) { el.classList.add('hidden'); });
                 formMessage.style.display = 'none';
 
+                // Validate
                 var isValid = true;
                 var name = document.getElementById('name').value.trim();
                 var email = document.getElementById('email').value.trim();
@@ -538,30 +523,27 @@
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
 
-                // JSONP: Create script tag with callback
-                var script = document.createElement('script');
-                script.src = GOOGLE_SCRIPT_URL
-                    + '?callback=formCallback'
-                    + '&name=' + encodeURIComponent(name)
+                // Build URL with query parameters (GET request preserves params through Google's redirect)
+                var url = GOOGLE_SCRIPT_URL
+                    + '?name=' + encodeURIComponent(name)
                     + '&email=' + encodeURIComponent(email)
                     + '&service=' + encodeURIComponent(service)
                     + '&message=' + encodeURIComponent(message);
 
-                // Error handling
-                script.onerror = function() {
-                    formMessage.style.display = 'block';
-                    formMessage.className = 'text-center mb-4 p-4 rounded-md bg-red-100 text-red-700';
-                    formMessage.textContent = 'Something went wrong. Please try again.';
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Submit Inquiry';
-                };
-
-                // Cleanup after load
-                script.onload = function() {
-                    if (script.parentNode) script.parentNode.removeChild(script);
-                };
-
-                document.body.appendChild(script);
+                fetch(url, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                })
+                .then(function() {
+                    showMessage('success', 'Thank you! Your inquiry has been submitted. We will contact you soon.');
+                    contactForm.reset();
+                    resetButton();
+                })
+                .catch(function(error) {
+                    console.error('Form submission error:', error);
+                    showMessage('error', 'Something went wrong. Please try again.');
+                    resetButton();
+                });
             });
         }
 
